@@ -49,13 +49,13 @@ class iAPSDataFieldView extends WatchUi.DataField {
              valueView.locX = valueView.locX + 5;
             valueView.locY = valueView.locY - 10;
             var valueViewTime = View.findDrawableById("valueTime");
-            valueViewTime.locX = valueViewTime.locX  + 10 ;
+            valueViewTime.locX = valueViewTime.locX + 15 ;
             valueViewTime.locY = valueViewTime.locY + 20; 
             var valueViewDelta = View.findDrawableById("valueDelta"); 
-            valueViewDelta.locX = valueViewDelta.locX - 40;   
+            valueViewDelta.locX = valueViewDelta.locX - 35;   
             valueViewDelta.locY = valueViewDelta.locY + 20;   
             var valueViewArrow = View.findDrawableById("arrow"); 
-            valueViewArrow.locX = valueView.locX + 30 ;  
+            valueViewArrow.locX = valueView.locX + 35 ;  
             valueViewArrow.locY = valueViewArrow.locY - 10 ;   
         }
 
@@ -75,46 +75,47 @@ class iAPSDataFieldView extends WatchUi.DataField {
     // once a second when the data field is visible.
     function onUpdate(dc as Dc) as Void {
         var bgString;
-        var loopColor;
+        //var loopColor;
         var loopString;
         var deltaString;
 
         var status = Application.Storage.getValue("status") as Dictionary;
+        var fontColour = Graphics.COLOR_BLACK;
 
         if (status == null) {
             bgString = "---";
-            loopColor = getLoopColor(-1);
+            //loopColor = getLoopColor(-1);
             loopString = "(xx)";
             deltaString = "??";
         } else {
             var bg = status["glucose"] as String;
+            var bgNumber = (bg == null) ? null : bg.toFloat();
             bgString = (bg == null) ? "--" : bg as String;
             var min = getMinutes(status);
-            loopColor = getLoopColor(min);
-            loopString = (min < 0 ? "(--)" : "(" + min.format("%d")) + " mn)" as String;
+           // loopColor = getLoopColor(min);
+            loopString = (min < 0 ? "(--)" : "(" + min.format("%d")) + " min)" as String;
             deltaString = getDeltaText(status) as String; 
+
+             if (bgNumber < 3.5 || bgNumber > 11) {
+                 fontColour = Graphics.COLOR_DK_RED;
+             } else if (bgNumber < 4.5 || bgNumber > 9) {
+                 fontColour =  Graphics.COLOR_ORANGE;
+             } else if (bgNumber == null) {
+                fontColour =  Graphics.COLOR_BLUE;
+             }
         }
         // Set the background color
         //View.findDrawableById("Background").setColor(loopColor);
-        (View.findDrawableById("Background") as Text).setColor(loopColor);    //getBackgroundColor());
+        //(View.findDrawableById("Background") as Text).setColor(loopColor);    //getBackgroundColor());
       
         // Set the foreground color and value
         var value = View.findDrawableById("value") as Text;
         var valueTime = View.findDrawableById("valueTime") as Text;
         var valueDelta = View.findDrawableById("valueDelta") as Text;
-       
-        if (getBackgroundColor() == Graphics.COLOR_BLACK) {
-            value.setColor(Graphics.COLOR_WHITE);
-            valueTime.setColor(Graphics.COLOR_WHITE);
-            valueDelta.setColor(Graphics.COLOR_WHITE);  
-           
-        } else {
-            value.setColor(Graphics.COLOR_BLACK);
-            valueTime.setColor(Graphics.COLOR_BLACK);
-            valueDelta.setColor(Graphics.COLOR_BLACK);
-            
-        }
 
+        value.setColor(fontColour);
+        valueTime.setColor(Graphics.COLOR_BLACK);
+        valueDelta.setColor(Graphics.COLOR_BLACK);
 
         value.setText(bgString);
         valueDelta.setText(deltaString);
@@ -134,23 +135,19 @@ class iAPSDataFieldView extends WatchUi.DataField {
     }
 
     function getMinutes(status as Dictionary) as Number {
-        //var status = Application.Storage.getValue("status") as Dictionary;
-        //System.print(Time.now().value());
         if (status == null) {
             return -1;
         }
-        var lastLoopDate = status["lastLoopDateInterval"] as Number;
+        var lastGlucoseDate = status["glucoseDateInterval"] as Number;
 
-        if (lastLoopDate == null) {
+        if (lastGlucoseDate == null) {
             return -1;
         }
 
-        if (lastLoopDate instanceof Number) {
+        if (lastGlucoseDate instanceof Number) {
             
-
             var now = Time.now().value() as Number;
-            
-            var min = (now - lastLoopDate) / 60;
+            var min = (now - lastGlucoseDate) / 60;
             return min;
         } else {
             return -1;
