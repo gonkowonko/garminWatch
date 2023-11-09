@@ -78,13 +78,17 @@ class iAPSDataFieldView extends WatchUi.DataField {
         //var loopColor;
         var loopString;
         var deltaString;
+        var isNightMode = false;
+
+        if(getBackgroundColor() == Graphics.COLOR_BLACK){
+            isNightMode = true;
+        }
 
         var status = Application.Storage.getValue("status") as Dictionary;
-        var fontColour = Graphics.COLOR_BLACK;
+        var fontColour = isNightMode ? Graphics.COLOR_WHITE : Graphics.COLOR_BLACK;
 
         if (status == null) {
             bgString = "---";
-            //loopColor = getLoopColor(-1);
             loopString = "(xx)";
             deltaString = "??";
         } else {
@@ -92,44 +96,43 @@ class iAPSDataFieldView extends WatchUi.DataField {
             var bgNumber = (bg == null) ? null : bg.toFloat();
             bgString = (bg == null) ? "--" : bg as String;
             var min = getMinutes(status);
-           // loopColor = getLoopColor(min);
             loopString = (min < 0 ? "(--)" : "(" + min.format("%d")) + " min)" as String;
             deltaString = getDeltaText(status) as String; 
 
              if (bgNumber < 3.5 || bgNumber > 11) {
-                 fontColour = Graphics.COLOR_DK_RED;
+                fontColour = isNightMode ? Graphics.COLOR_RED : Graphics.COLOR_DK_RED;
              } else if (bgNumber < 4.5 || bgNumber > 9) {
-                 fontColour =  Graphics.COLOR_ORANGE;
+                fontColour = isNightMode ? Graphics.COLOR_YELLOW : Graphics.COLOR_ORANGE;
+             
              } else if (bgNumber == null) {
                 fontColour =  Graphics.COLOR_BLUE;
              }
         }
-        // Set the background color
-        //View.findDrawableById("Background").setColor(loopColor);
-        //(View.findDrawableById("Background") as Text).setColor(loopColor);    //getBackgroundColor());
-      
+
+        //Set the background shape
+        (View.findDrawableById("Background") as Text).setColor(isNightMode ? Graphics.COLOR_BLACK : Graphics.COLOR_WHITE); 
+
         // Set the foreground color and value
         var value = View.findDrawableById("value") as Text;
         var valueTime = View.findDrawableById("valueTime") as Text;
         var valueDelta = View.findDrawableById("valueDelta") as Text;
 
         value.setColor(fontColour);
-        valueTime.setColor(Graphics.COLOR_BLACK);
-        valueDelta.setColor(Graphics.COLOR_BLACK);
+        valueTime.setColor(isNightMode ? Graphics.COLOR_WHITE : Graphics.COLOR_BLACK);
+        valueDelta.setColor(isNightMode ? Graphics.COLOR_WHITE : Graphics.COLOR_BLACK);
 
         value.setText(bgString);
         valueDelta.setText(deltaString);
         valueTime.setText(loopString);
 
         var arrowView = View.findDrawableById("arrow") as Bitmap;   
-        if (getBackgroundColor() == Graphics.COLOR_BLACK) {
+        if (isNightMode) {
              arrowView.setBitmap(getDirection(status));   
         }  
         else {
             arrowView.setBitmap(getDirectionBlack(status));
         }
         
-
         // Call parent's onUpdate(dc) to redraw the layout
         View.onUpdate(dc);
     }
