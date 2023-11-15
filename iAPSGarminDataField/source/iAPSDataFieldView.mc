@@ -96,7 +96,7 @@ class iAPSDataFieldView extends WatchUi.DataField {
             var bgNumber = (bg == null) ? null : bg.toFloat();
             bgString = (bg == null) ? "--" : bg as String;
             var min = getMinutes(status);
-            loopString = (min < 0 ? "(--)" : "(" + min.format("%d")) + " min)" as String;
+            loopString = (min < 0 ? "(--)" : "(" + min.format("%d") + " min)")  as String;
             deltaString = getDeltaText(status) as String; 
 
              if (bgNumber < 3.5 || bgNumber > 11) {
