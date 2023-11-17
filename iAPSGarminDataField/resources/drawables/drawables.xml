@@ -3,49 +3,49 @@
 
     <!-- Arrows -->
 
-    <bitmap id="Flat" filename="Flat.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="Flat" filename="Flat.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>FFFFFF</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="Unknown" filename="Unknown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="Unknown" filename="Unknown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>FFFFFF</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="FortyFiveUp" filename="FortyFiveUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="FortyFiveUp" filename="FortyFiveUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>FFFFFF</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="FortyFiveDown" filename="FortyFiveDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="FortyFiveDown" filename="FortyFiveDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>FFFFFF</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="SingleUp" filename="SingleUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="SingleUp" filename="SingleUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>FFFFFF</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="SingleDown" filename="SingleDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="SingleDown" filename="SingleDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>FFFFFF</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="DoubleUp" filename="DoubleUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="DoubleUp" filename="DoubleUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>FFFFFF</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="DoubleDown" filename="DoubleDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="DoubleDown" filename="DoubleDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>FFFFFF</color>
         </palette> 
@@ -53,49 +53,49 @@
 
     <!-- Arrows black-->
 
-    <bitmap id="FlatB" filename="Flat.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="FlatB" filename="Flat.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>000000</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="UnknownB" filename="Unknown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="UnknownB" filename="Unknown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>000000</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="FortyFiveUpB" filename="FortyFiveUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="FortyFiveUpB" filename="FortyFiveUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>000000</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="FortyFiveDownB" filename="FortyFiveDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="FortyFiveDownB" filename="FortyFiveDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>000000</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="SingleUpB" filename="SingleUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="SingleUpB" filename="SingleUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>000000</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="SingleDownB" filename="SingleDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="SingleDownB" filename="SingleDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>000000</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="DoubleUpB" filename="DoubleUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="DoubleUpB" filename="DoubleUp.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>000000</color>
         </palette> 
     </bitmap>
 
-    <bitmap id="DoubleDownB" filename="DoubleDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="screen"> 
+    <bitmap id="DoubleDownB" filename="DoubleDown.svg" scaleX="7%" scaleY="7%" scaleRelativeTo="image"> 
         <palette>
             <color>000000</color>
         </palette> 

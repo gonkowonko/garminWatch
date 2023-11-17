@@ -42,24 +42,46 @@ class iAPSDataFieldView extends WatchUi.DataField {
         // Use the generic, centered layout
         } else {
             View.setLayout(Rez.Layouts.MainLayout(dc));
+
+            // LEFT START
             var labelView = View.findDrawableById("label");
-            labelView.locX = labelView.locX - 40;
-            labelView.locY = labelView.locY - 10;
+            labelView.locX = labelView.locX - 110;
+            labelView.locY = labelView.locY - 20;
+
             var valueView = View.findDrawableById("value");
-             valueView.locX = valueView.locX + 5;
-            valueView.locY = valueView.locY - 10;
-            var valueViewTime = View.findDrawableById("valueTime");
-            valueViewTime.locX = valueViewTime.locX + 15 ;
-            valueViewTime.locY = valueViewTime.locY + 20; 
-            var valueViewDelta = View.findDrawableById("valueDelta"); 
-            valueViewDelta.locX = valueViewDelta.locX - 35;   
-            valueViewDelta.locY = valueViewDelta.locY + 20;   
+            valueView.locX = labelView.locX;
+            valueView.locY = labelView.locY + 5;
+
             var valueViewArrow = View.findDrawableById("arrow"); 
-            valueViewArrow.locX = valueView.locX + 35 ;  
-            valueViewArrow.locY = valueViewArrow.locY - 10 ;   
+            valueViewArrow.locX = valueView.locX + 60 ;  //default is moved during processing
+            valueViewArrow.locY = valueView.locY + 15; 
+
+            // LEFT END
+
+            // RIGHT START
+
+            var valueViewDelta = View.findDrawableById("valueDelta"); 
+            valueViewDelta.locX = valueViewDelta.locX + 30;   
+            valueViewDelta.locY = labelView.locY; 
+
+            //var valueViewTime = View.findDrawableById("valueTime");
+            //valueViewTime.locX = valueViewDelta.locX;
+           // valueViewTime.locY = valueViewDelta.locY + 20; 
+
+            var valueIob = View.findDrawableById("iob");
+            valueIob.locX = valueViewDelta.locX;
+            valueIob.locY = valueViewDelta.locY + 20; 
+
+            var valueCob = View.findDrawableById("cob");
+            valueCob.locX = valueIob.locX;
+            valueCob.locY = valueIob.locY + 20; 
+
+            // RIGHT END
+
+  
         }
 
-        (View.findDrawableById("label") as Text).setText(Rez.Strings.label);
+       // (View.findDrawableById("label") as Text).setText(Rez.Strings.label);
     }
 
     // The given info object contains all the current workout information.
@@ -74,56 +96,89 @@ class iAPSDataFieldView extends WatchUi.DataField {
     // Display the value you computed here. This will be called
     // once a second when the data field is visible.
     function onUpdate(dc as Dc) as Void {
-        var bgString;
-        //var loopColor;
-        var loopString;
-        var deltaString;
+        var bgString = "--";
+        var timeAgoString = null;
+        var deltaString = "--";
         var isNightMode = false;
+        var cobString = "";
+        var iobString = "";
+        var bgTenOrOver = false;
 
         if(getBackgroundColor() == Graphics.COLOR_BLACK){
             isNightMode = true;
         }
 
         var status = Application.Storage.getValue("status") as Dictionary;
-        var fontColour = isNightMode ? Graphics.COLOR_WHITE : Graphics.COLOR_BLACK;
+        var fontColour = Graphics.COLOR_DK_GREEN;
 
-        if (status == null) {
-            bgString = "---";
-            loopString = "(xx)";
-            deltaString = "??";
-        } else {
+        if (status != null) {
+
             var bg = status["glucose"] as String;
             var bgNumber = (bg == null) ? null : bg.toFloat();
             bgString = (bg == null) ? "--" : bg as String;
-            var min = getMinutes(status);
-            loopString = (min < 0 ? "(--)" : "(" + min.format("%d") + " min)")  as String;
-            deltaString = getDeltaText(status) as String; 
+            bgTenOrOver = bgNumber >= 10;
 
-             if (bgNumber < 3.5 || bgNumber > 11) {
-                fontColour = isNightMode ? Graphics.COLOR_RED : Graphics.COLOR_DK_RED;
-             } else if (bgNumber < 4.5 || bgNumber > 9) {
+            if (bgNumber < 3.5 || bgNumber > 11) {
+                fontColour = Graphics.COLOR_DK_RED;
+            } else if (bgNumber < 4.5 || bgNumber > 9) {
                 fontColour = isNightMode ? Graphics.COLOR_YELLOW : Graphics.COLOR_ORANGE;
-             
-             } else if (bgNumber == null) {
+            } else if (bgNumber == null) {
                 fontColour =  Graphics.COLOR_BLUE;
-             }
+            }
+            
+            var min = getMinutes(status); //-1 means no data
+
+            if (min >= 30){
+                timeAgoString = "stale";
+            } else if (min >= 0) {
+                timeAgoString = min.format("%d") + " min";
+            }
+
+            deltaString = getDeltaText(status) as String; 
+           
+            cobString = status["cob"] as String;
+            var iobValue = status["iob"] as Double;
+            
+            if(iobValue != null) {              
+                iobString = iobValue.format("%.2f");
+            }
+
+        }
+
+        if(bgString.equals("--")) {
+            fontColour = isNightMode ? Graphics.COLOR_WHITE : Graphics.COLOR_BLACK;
+        }
+
+        cobString = "COB: " + cobString;
+        iobString = "IOB:  " + iobString;
+
+        if(timeAgoString != null){
+            deltaString = deltaString + " (" + timeAgoString + ")";
         }
 
         //Set the background shape
         (View.findDrawableById("Background") as Text).setColor(isNightMode ? Graphics.COLOR_BLACK : Graphics.COLOR_WHITE); 
 
         // Set the foreground color and value
+        var label = View.findDrawableById("label") as Text;
         var value = View.findDrawableById("value") as Text;
-        var valueTime = View.findDrawableById("valueTime") as Text;
+        //var valueTime = View.findDrawableById("valueTime") as Text;
         var valueDelta = View.findDrawableById("valueDelta") as Text;
+        var valueIob = View.findDrawableById("iob") as Text;
+        var valueCob = View.findDrawableById("cob") as Text;
 
         value.setColor(fontColour);
-        valueTime.setColor(isNightMode ? Graphics.COLOR_WHITE : Graphics.COLOR_BLACK);
+        label.setColor(isNightMode ? Graphics.COLOR_WHITE : Graphics.COLOR_DK_GRAY);
+        //valueTime.setColor(isNightMode ? Graphics.COLOR_WHITE : Graphics.COLOR_BLACK);
         valueDelta.setColor(isNightMode ? Graphics.COLOR_WHITE : Graphics.COLOR_BLACK);
+        valueIob.setColor(isNightMode ? Graphics.COLOR_WHITE : Graphics.COLOR_BLACK);
+        valueCob.setColor(isNightMode ? Graphics.COLOR_WHITE : Graphics.COLOR_BLACK);
 
         value.setText(bgString);
         valueDelta.setText(deltaString);
-        valueTime.setText(loopString);
+        //valueTime.setText(loopString);
+        valueIob.setText(iobString);
+        valueCob.setText(cobString);
 
         var arrowView = View.findDrawableById("arrow") as Bitmap;   
         if (isNightMode) {
@@ -132,6 +187,13 @@ class iAPSDataFieldView extends WatchUi.DataField {
         else {
             arrowView.setBitmap(getDirectionBlack(status));
         }
+
+        // Move image based on BG value
+        var valueView =  View.findDrawableById("value");
+        var valueViewArrow =  View.findDrawableById("arrow");
+        valueView.locX = bgTenOrOver ? 13 : 25;
+        valueViewArrow.locX = valueView.locX + (bgTenOrOver ? 105 : 80);  
+
         
         // Call parent's onUpdate(dc) to redraw the layout
         View.onUpdate(dc);
@@ -152,6 +214,7 @@ class iAPSDataFieldView extends WatchUi.DataField {
             var now = Time.now().value() as Number;
             var min = (now - lastGlucoseDate) / 60;
             return min;
+
         } else {
             return -1;
         }
