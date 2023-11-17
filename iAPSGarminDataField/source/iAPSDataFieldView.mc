@@ -78,7 +78,25 @@ class iAPSDataFieldView extends WatchUi.DataField {
 
             // RIGHT END
 
-  
+            //hide stuff we dont have room for
+
+            var isHalfView = getIsHalfView(dc);
+
+            valueIob.isVisible = !isHalfView;
+            valueCob.isVisible = !isHalfView;
+
+            if(isHalfView){
+                (valueView as Text).setFont(Graphics.FONT_SYSTEM_NUMBER_MEDIUM);
+                valueView.locX = valueView.locX + 70;
+                valueViewArrow.locX = valueViewArrow.locX + 70;
+                valueViewArrow.locY = valueViewArrow.locY - 5;
+
+                (valueViewDelta as Text).setJustification(Graphics.TEXT_JUSTIFY_CENTER);
+
+                valueViewDelta.locX = 61;
+                //(valueViewDelta as Text).setBackgroundColor(Graphics.COLOR_BLUE);
+                valueViewDelta.locY = valueView.locY + 35;
+            }
         }
 
        // (View.findDrawableById("label") as Text).setText(Rez.Strings.label);
@@ -92,6 +110,11 @@ class iAPSDataFieldView extends WatchUi.DataField {
         // See Activity.Info in the documentation for available information.
         
     }
+
+    function getIsHalfView(dc as Dc) as Boolean {
+        return dc.getWidth() == 122;   //122 = half, 246 full on a 830
+    }
+
 
     // Display the value you computed here. This will be called
     // once a second when the data field is visible.
@@ -107,6 +130,8 @@ class iAPSDataFieldView extends WatchUi.DataField {
         if(getBackgroundColor() == Graphics.COLOR_BLACK){
             isNightMode = true;
         }
+
+        var isHalfView = getIsHalfView(dc);
 
         var status = Application.Storage.getValue("status") as Dictionary;
         var fontColour = Graphics.COLOR_DK_GREEN;
@@ -188,12 +213,15 @@ class iAPSDataFieldView extends WatchUi.DataField {
             arrowView.setBitmap(getDirectionBlack(status));
         }
 
-        // Move image based on BG value
         var valueView =  View.findDrawableById("value");
         var valueViewArrow =  View.findDrawableById("arrow");
         valueView.locX = bgTenOrOver ? 13 : 25;
-        valueViewArrow.locX = valueView.locX + (bgTenOrOver ? 105 : 80);  
 
+        if(isHalfView){
+             valueViewArrow.locX = valueView.locX + (bgTenOrOver ? 78 : 60); 
+        }else{
+            valueViewArrow.locX = valueView.locX + (bgTenOrOver ? 105 : 80);  
+        }
         
         // Call parent's onUpdate(dc) to redraw the layout
         View.onUpdate(dc);
