@@ -1,0 +1,14 @@
+<settings>
+    <setting propertyKey="@Properties.UrgentLowValue" title="@Strings.UrgentLowValue" prompt="@Strings.UrgentLowValuePrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.Error" />
+    </setting>
+     <setting propertyKey="@Properties.LowValue" title="@Strings.LowValue" prompt="@Strings.LowValuePrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.Error" />
+    </setting>
+     <setting propertyKey="@Properties.UrgentHighValue" title="@Strings.UrgentHighValue" prompt="@Strings.UrgentHighValuePrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.Error" />
+    </setting>
+     <setting propertyKey="@Properties.HighValue" title="@Strings.HighValue" prompt="@Strings.HighValuePrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.Error" />
+    </setting>
+</settings>

@@ -1,0 +1,6 @@
+<properties>
+    <property id="UrgentLowValue" type="double">3.6</property>
+    <property id="LowValue" type="double">4.4</property>
+    <property id="UrgentHighValue" type="double">11</property>
+    <property id="HighValue" type="double">9</property>
+</properties>

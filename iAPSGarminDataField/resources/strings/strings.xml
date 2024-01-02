@@ -1,4 +1,13 @@
 <strings>
     <string id="AppName">iAPSDataField</string>
     <string id="label">iAPS</string>
+    <string id="UrgentLowValue">Urgent low value</string>
+    <string id="UrgentLowValuePrompt">What BG number represents a URGENT low?</string>
+    <string id="LowValue">Low value</string>
+    <string id="LowValuePrompt">What BG number represents a low?</string>
+    <string id="UrgentHighValue">Urgent high value</string>
+    <string id="UrgentHighValuePrompt">What BG number represents a URGENT high?</string>
+    <string id="HighValue">High value</string>
+    <string id="HighValuePrompt">What BG number represents a high?</string>
+    <string id="Error">Enter a valid BG value</string>
 </strings>

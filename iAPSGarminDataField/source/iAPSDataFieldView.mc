@@ -115,7 +115,6 @@ class iAPSDataFieldView extends WatchUi.DataField {
         return dc.getWidth() == 122;   //122 = half, 246 full on a 830
     }
 
-
     // Display the value you computed here. This will be called
     // once a second when the data field is visible.
     function onUpdate(dc as Dc) as Void {
@@ -126,9 +125,32 @@ class iAPSDataFieldView extends WatchUi.DataField {
         var cobString = "";
         var iobString = "";
         var bgTenOrOver = false;
-
+        
         if(getBackgroundColor() == Graphics.COLOR_BLACK){
             isNightMode = true;
+        }
+
+        //Grab the application settings
+        var settingUrgentLow = Application.Properties.getValue("UrgentLowValue");
+        var settingUrgentHigh = Application.Properties.getValue("UrgentHighValue");
+        var settingLow = Application.Properties.getValue("LowValue");
+        var settingHigh = Application.Properties.getValue("HighValue");
+
+        //Some fallback defaults
+        if(settingUrgentLow == null){
+            settingUrgentLow = 3.8;
+        }
+
+        if(settingUrgentHigh == null){
+            settingUrgentHigh = 11;
+        }
+
+        if(settingLow == null){
+            settingLow = 4.4;
+        }
+
+        if(settingHigh == null){
+            settingHigh = 9;
         }
 
         var isHalfView = getIsHalfView(dc);
@@ -143,22 +165,24 @@ class iAPSDataFieldView extends WatchUi.DataField {
             bgString = (bg == null) ? "--" : bg as String;
             bgTenOrOver = bgNumber >= 10;
 
-            if (bgNumber < 3.5 || bgNumber > 11) {
-                fontColour = Graphics.COLOR_DK_RED;
-            } else if (bgNumber < 4.5 || bgNumber > 9) {
+            if (bgNumber <= settingUrgentLow || bgNumber >= settingUrgentHigh) {
+                    fontColour = Graphics.COLOR_DK_RED;
+            } else if (bgNumber <= settingLow || bgNumber >= settingHigh) {
                 fontColour = isNightMode ? Graphics.COLOR_YELLOW : Graphics.COLOR_ORANGE;
             } else if (bgNumber == null) {
-                fontColour =  Graphics.COLOR_BLUE;
+            fontColour =  Graphics.COLOR_BLUE;
             }
-            
+        
             var min = getMinutes(status); //-1 means no data
 
             if (min >= 30){
                 timeAgoString = "stale";
             } else if (min >= 0) {
                 timeAgoString = min.format("%d") + " min";
+            } else {
+                timeAgoString = "??";
             }
-
+        
             deltaString = getDeltaText(status) as String; 
            
             cobString = status["cob"] as String;
@@ -218,7 +242,7 @@ class iAPSDataFieldView extends WatchUi.DataField {
         valueView.locX = bgTenOrOver ? 13 : 25;
 
         if(isHalfView){
-             valueViewArrow.locX = valueView.locX + (bgTenOrOver ? 78 : 60); 
+            valueViewArrow.locX = valueView.locX + (bgTenOrOver ? 78 : 60); 
         }else{
             valueViewArrow.locX = valueView.locX + (bgTenOrOver ? 105 : 80);  
         }
@@ -231,6 +255,7 @@ class iAPSDataFieldView extends WatchUi.DataField {
         if (status == null) {
             return -1;
         }
+
         var lastGlucoseDate = status["glucoseDateInterval"] as Number;
 
         if (lastGlucoseDate == null) {
@@ -261,12 +286,11 @@ class iAPSDataFieldView extends WatchUi.DataField {
     } 
 
     function getDeltaText(status as Dictionary) as String {
-        // var status = Application.Storage.getValue("status") as Dictionary;
         if (status == null) {
             return "--";
         }
         var delta = status["delta"] as String;
-
+        
         var deltaString = (delta == null) ? "--" : delta;
 
         return deltaString;
@@ -282,26 +306,35 @@ class iAPSDataFieldView extends WatchUi.DataField {
 
             switch (trend) {
                 case "Flat":
+                case "→":
                     bitmap = WatchUi.loadResource(Rez.Drawables.FlatB);
                     break;
                 case "SingleUp":
+                case "↑":
                     bitmap = WatchUi.loadResource(Rez.Drawables.SingleUpB);
                     break;
                 case "SingleDown":
+                case "↓":
                     bitmap = WatchUi.loadResource(Rez.Drawables.SingleDownB);
                     break;
                 case "FortyFiveUp":
+                case "↗︎":
                     bitmap = WatchUi.loadResource(Rez.Drawables.FortyFiveUpB);
                     break;
                 case "FortyFiveDown":
+                case "↘︎":
                     bitmap = WatchUi.loadResource(Rez.Drawables.FortyFiveDownB);
                     break;
                 case "DoubleUp":
                 case "TripleUp":
+                case "⇈":
+                case "↑↑":
                     bitmap = WatchUi.loadResource(Rez.Drawables.DoubleUpB);
                     break;
                 case "DoubleDown":
                 case "TripleDown":
+                case "⇊":
+                case "↓↓":
                     bitmap = WatchUi.loadResource(Rez.Drawables.DoubleDownB);
                     break;
                 default: break;
@@ -324,26 +357,35 @@ class iAPSDataFieldView extends WatchUi.DataField {
 
             switch (trend) {
                 case "Flat":
+                case "→":
                     bitmap = WatchUi.loadResource(Rez.Drawables.Flat);
                     break;
                 case "SingleUp":
+                case "↑":
                     bitmap = WatchUi.loadResource(Rez.Drawables.SingleUp);
                     break;
                 case "SingleDown":
+                case "↓":
                     bitmap = WatchUi.loadResource(Rez.Drawables.SingleDown);
                     break;
                 case "FortyFiveUp":
+                case "↗︎":
                     bitmap = WatchUi.loadResource(Rez.Drawables.FortyFiveUp);
                     break;
                 case "FortyFiveDown":
+                case "↘︎":
                     bitmap = WatchUi.loadResource(Rez.Drawables.FortyFiveDown);
                     break;
                 case "DoubleUp":
                 case "TripleUp":
+                case "⇈":
+                case "↑↑":
                     bitmap = WatchUi.loadResource(Rez.Drawables.DoubleUp);
                     break;
                 case "DoubleDown":
                 case "TripleDown":
+                case "⇊":
+                case "↓↓":
                     bitmap = WatchUi.loadResource(Rez.Drawables.DoubleDown);
                     break;
                 default: break;
@@ -354,7 +396,7 @@ class iAPSDataFieldView extends WatchUi.DataField {
             return bitmap;
         }
         
-    }
+    }  
 
 
 }
